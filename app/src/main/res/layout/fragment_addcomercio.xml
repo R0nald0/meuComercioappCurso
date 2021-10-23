@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="scroll"
+    >
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Adicione seu Comércio"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome Comercio"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            />
+        <EditText
+            android:id="@+id/edtNomeComer"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="@string/meu_com_rcio"
+            android:gravity="center"
+            android:inputType="text"/>
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meu nome"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:id="@+id/txComerNomeUSER"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="@string/nomocad"
+            android:gravity="center"
+            android:inputType="textPersonName"/>
+
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Localização"
+            android:textSize="15dp"
+            />
+        <EditText
+            android:id="@+id/localComercio"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Estado/cidade/Bairro"
+            android:gravity="center"/>
+
+
+        <Button
+            android:id="@+id/edSalvaComercio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/nodebate"
+            android:text="Salvar" />
+
+    </LinearLayout>
+
+
+
+
+</ScrollView>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CadastroActivity"
+    android:background="@color/SlateBlue"
+    android:contentDescription="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:id="@+id/lnlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/SlateBlue">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cadastre-se"
+            android:textSize="60sp"
+            android:fontFamily="@font/nodebate"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/white"
+            />
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/nomocad"
+                android:fontFamily="@font/romelio"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/cadEdtnome"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Digite seu nome"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textPersonName"
+                android:maxLines="@integer/material_motion_duration_short_2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/email"
+                android:fontFamily="@font/romelio"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/cadEdtemail"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Digite seu Email"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textEmailAddress"
+                android:maxLines="@integer/material_motion_duration_short_1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/senhatx"
+                android:fontFamily="@font/romelio"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/cadEdtsenha"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Digite sua Senha"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textPassword"/>
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/estado"
+                android:textColor="@color/white"
+                android:textSize="13sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cidade"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:layout_marginLeft="90dp"/>
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/spllLayout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:layout_marginLeft="14dp"
+                android:id="@+id/spEstaodos"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:contentDescription="@string/estado"
+                />
+            <Spinner
+
+                android:id="@+id/spCidade"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:contentDescription="@string/cidade" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bairro"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:layout_marginTop="20dp"/>
+
+        <Spinner
+
+            android:id="@+id/spBairro"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginLeft="15dp"
+            android:contentDescription="@string/bairro"/>
+
+
+
+        <Button
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:id="@+id/telaCadBtn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/cadastrar"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/black"
+                android:fontFamily="@font/romelio"/>
+
+
+
+    </LinearLayout>
+
+</ScrollView>
+

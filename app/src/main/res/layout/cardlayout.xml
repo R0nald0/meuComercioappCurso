@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+    android:layout_margin="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/cardVnome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:typeface="serif"
+                android:padding="2dp"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/cardVdata"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Data"
+                    android:fontFamily="@font/livesshow"
+                    android:textSize="17sp"
+                    android:padding="2dp"
+                    />
+                <TextView
+                    android:id="@+id/cardLocal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bahia / Salvador/ Rio Vermelho"
+                    android:gravity="end"
+                    android:fontFamily="@font/romelio"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:id="@+id/cardVimage"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:srcCompat="@drawable/img1"/>
+
+            <TextView
+                android:id="@+id/cardVNota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nota"
+                android:textSize="18sp"
+                android:padding="10dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/cardVbtnGostei"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Gostei"
+                android:textSize="15sp"
+                android:drawableLeft="@drawable/ic_favorite_"
+                />
+
+
+            <Button
+                android:id="@+id/cardVbtnComentar"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Comentar"
+                style="?attr/buttonBarPositiveButtonStyle"
+                android:textSize="15sp"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/ic_baseline_comment_24"
+
+                />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

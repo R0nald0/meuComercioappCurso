@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">MeuComercio</string>
+    <string name="email">Email</string>
+
+    <string name="senhatx">Senha</string>
+    <string name="senhaEd">Senha</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="entrar">Entrar</string>
+    <string name="nomocad">Nome</string>
+    <string name="estado">Estado</string>
+    <string name="cidade">Cidade</string>
+    <string name="bairro">Bairro</string>
+
+    <string-array name="estados">
+        <item>Bahia</item>
+        <item>São Paulo</item>
+        <item>Rio de Janeiro</item>
+        <item>Minas Gerais</item>
+    </string-array>
+
+    <string-array name="cidades">
+        <item>Salvador</item>
+        <item>Feira de Santana</item>
+        <item>Amargosa</item>
+        <item>Camaçari</item>
+    </string-array>
+
+    <string-array name="bairros" >
+        <item>Barbalho</item>
+        <item>Chame-Chame</item>
+        <item>Cajazeiras VIII</item>
+        <item>Camaçari</item>
+    </string-array>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="incio">Incio</string>
+    <string name="meu_com_rcio">Meu Comércio</string>
+    <string name="sair">Sair</string>
+    <string name="adicionar_postagem">Adicionar Postagem</string>
+    <string name="t_tulo">Título</string>
+</resources>

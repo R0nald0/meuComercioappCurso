@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "350673393542",
+    "project_id": "meucomercio-aaa10",
+    "storage_bucket": "meucomercio-aaa10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350673393542:android:f22ab8b0f6e04ac9fdfe07",
+        "android_client_info": {
+          "package_name": "com.example.meucomercio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350673393542-43ca5m1v9sjnjnbhcuido9nf2eqc0nfu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ3kDGT2Jduuqc7iZ8qRCj-Go22AhdISc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350673393542-43ca5m1v9sjnjnbhcuido9nf2eqc0nfu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
