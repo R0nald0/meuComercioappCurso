@@ -20,15 +20,33 @@
             android:orientation="vertical"
             >
 
-            <TextView
-                android:id="@+id/cardVnome"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nome"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:typeface="serif"
-                android:padding="2dp"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cardVnome"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="Nome"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:typeface="serif"
+                    android:padding="2dp"/>
+
+
+                <TextView
+                    android:id="@+id/cardVnomeUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NomeUsuario"
+                    android:textStyle="italic"
+                    android:textSize="15dp"
+                    android:typeface="monospace"
+                    android:padding="2dp"/>
+
+            </LinearLayout>
 
 
 

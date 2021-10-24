@@ -21,6 +21,7 @@ import java.util.List;
 public class PostComercio {
     private String idPost;
     private String idUsuario;
+    private String nomeUsuario;
     private String tituloComercio;
     private String dataPost;
     private int imgPost;
@@ -69,7 +70,6 @@ public class PostComercio {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
 
                                 //Log.i("query",documentSnapshot.getId() + "=>" + documentSnapshot.getData());
-
 
                             }
                         }else {
@@ -132,6 +132,11 @@ public class PostComercio {
         this.notaPost = notaPost;
     }
 
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
 
-
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
 }

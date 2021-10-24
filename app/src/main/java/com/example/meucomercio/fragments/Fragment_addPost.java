@@ -29,31 +29,23 @@ import com.example.meucomercio.R;
 import com.example.meucomercio.model.Comercio;
 import com.example.meucomercio.model.PostComercio;
 import com.example.meucomercio.model.Usuario;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.PrivateKey;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
@@ -67,6 +59,7 @@ public class Fragment_addPost extends Fragment {
     private TextView edData;
     private Button BtnsalvadrDados;
     private  EditText notaPost;
+    private  String postUsuNome;
 
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -95,7 +88,7 @@ public class Fragment_addPost extends Fragment {
 
        BtnsalvadrDados= (Button) view.findViewById(R.id.edtComSalvarPost);
 
-
+        buscarCampoUsuario();
 
        btAddImege.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -186,14 +179,17 @@ public class Fragment_addPost extends Fragment {
         DateFormat hr = new SimpleDateFormat("HH:MM");
         String datahj =dateFormat.format(data);
         String hora  = hr.format(data);
-        String horaDta =   datahj + " ás" + hora;
+        String horaDta =   datahj + "  ás    " + hora;
 
         postComercio.setNomeComercio(edTitulo.getText().toString());
         postComercio.setDataPost( horaDta);
         postComercio.setIdUsuario(auth.getUid());
         postComercio.setNotaPost(notaPost.getText().toString());
+        postComercio.setNomeUsuario(postUsuNome);
+
+
         vericarCampos();
-        salvarimgFirebase();
+        //salvarimgFirebase();
         postComercio.salvarPost();
         limparCampos();
     }
@@ -213,6 +209,22 @@ public class Fragment_addPost extends Fragment {
         }
     }
 
+    public void buscarCampoUsuario(){
 
+
+        DocumentReference documentReference =db.collection("Usuarios").document(auth.getCurrentUser().getUid());
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null){
+
+                          postUsuNome=value.getString("nome");
+                }else {
+                    Log.i("teste","erro"+ error.toString());
+                }
+            }
+        });
+
+    }
 
 }

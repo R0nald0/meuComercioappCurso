@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.meucomercio.R;
 import com.example.meucomercio.adapter.AdapterCardview;
 import com.example.meucomercio.model.PostComercio;
+import com.example.meucomercio.model.Usuario;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,8 @@ public class Fragment_home extends Fragment {
     private FirebaseAuth auth =FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     PostComercio postComercio = new PostComercio();
+    Usuario usuario1 = new Usuario();
+
 
     private FirestoreRecyclerAdapter <PostComercio, posVholder> adapterCardview;
     private  String bairroPost  ;
@@ -91,6 +94,7 @@ public class Fragment_home extends Fragment {
                         holder.imageView.setImageResource(R.drawable.img1);
                         holder.notaPost.setText(postComercio.getNotaPost());
                         holder.localPost.setText("Bahia/Salvador/" + bairroPost);
+                        holder.nomeUsuarioPost.setText(postComercio.getNomeUsuario());
                }
            };
 
@@ -128,6 +132,7 @@ public class Fragment_home extends Fragment {
         private ImageView imageView;
         private TextView notaPost;
         private  TextView localPost;
+        private  TextView nomeUsuarioPost;
 
         public posVholder(@NonNull View itemView) {
             super(itemView);
@@ -137,7 +142,7 @@ public class Fragment_home extends Fragment {
             imageView = (ImageView)  itemView.findViewById(R.id.cardVimage);
             notaPost = (TextView)   itemView.findViewById(R.id.cardVNota);
             localPost = (TextView)  itemView.findViewById(R.id.cardLocal);
-
+            nomeUsuarioPost = (TextView) itemView.findViewById(R.id.cardVnomeUsuario);
         }
 
     }
@@ -156,9 +161,7 @@ public class Fragment_home extends Fragment {
         bairrospi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 bairroPost = bai.get(position);
-
             }
 
             @Override
