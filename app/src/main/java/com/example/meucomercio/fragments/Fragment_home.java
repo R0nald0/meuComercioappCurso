@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.meucomercio.R;
 import com.example.meucomercio.adapter.AdapterCardview;
 import com.example.meucomercio.model.PostComercio;
@@ -47,6 +49,7 @@ public class Fragment_home extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     PostComercio postComercio = new PostComercio();
     Usuario usuario1 = new Usuario();
+
 
 
     private FirestoreRecyclerAdapter <PostComercio, posVholder> adapterCardview;
@@ -89,12 +92,23 @@ public class Fragment_home extends Fragment {
 
                @Override
                protected void onBindViewHolder(@NonNull posVholder holder, int i, @NonNull PostComercio postComercio) {
+
                         holder.nome.setText(postComercio.getNomeComercio());
                         holder.data.setText(postComercio.getDataPost());
                         holder.imageView.setImageResource(R.drawable.img1);
+                        Glide.with(getContext()).load(postComercio.getUrlImg()).into(holder.imageView);
                         holder.notaPost.setText(postComercio.getNotaPost());
                         holder.localPost.setText("Bahia/Salvador/" + bairroPost);
                         holder.nomeUsuarioPost.setText(postComercio.getNomeUsuario());
+
+                        holder.btnGotei.setOnClickListener(new View.OnClickListener() {
+                            int cont = 0;
+                            @Override
+                            public void onClick(View v) {
+                                 cont = cont +1;
+                                 holder.btnGotei.setText("("+cont +") Gostei");
+                            }
+                        });
                }
            };
 
@@ -133,16 +147,27 @@ public class Fragment_home extends Fragment {
         private TextView notaPost;
         private  TextView localPost;
         private  TextView nomeUsuarioPost;
+        private Button btnGotei;
 
         public posVholder(@NonNull View itemView) {
             super(itemView);
 
-            nome =(TextView) itemView.findViewById(R.id.cardVnome);
-            data = (TextView)  itemView.findViewById(R.id.cardVdata);
-            imageView = (ImageView)  itemView.findViewById(R.id.cardVimage);
-            notaPost = (TextView)   itemView.findViewById(R.id.cardVNota);
-            localPost = (TextView)  itemView.findViewById(R.id.cardLocal);
+            nome = (TextView) itemView.findViewById(R.id.cardVnome);
+            data = (TextView) itemView.findViewById(R.id.cardVdata);
+            imageView = (ImageView) itemView.findViewById(R.id.cardVimage);
+            notaPost = (TextView) itemView.findViewById(R.id.cardVNota);
+            localPost = (TextView) itemView.findViewById(R.id.cardLocal);
             nomeUsuarioPost = (TextView) itemView.findViewById(R.id.cardVnomeUsuario);
+            btnGotei = (Button) itemView.findViewById(R.id.cardVbtnGostei);
+
+
+            btnGotei.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
         }
 
     }

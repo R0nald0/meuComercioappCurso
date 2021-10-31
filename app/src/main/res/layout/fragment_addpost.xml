@@ -77,12 +77,23 @@
             android:hint="Nota sobre o Post" />
 
 
+        <TextView
+            android:id="@+id/idurldown"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="url download" />
+
         <Button
+
             android:id="@+id/edtComSalvarPost"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Salvar"/>
+
+
+
 
     </LinearLayout>
 

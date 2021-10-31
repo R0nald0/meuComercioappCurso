@@ -52,7 +52,6 @@ public class InitActivity extends AppCompatActivity {
         if (user != null){
             //startActivity(new Intent(InitActivity.this,MainActivity.class));
 
-
             Intent intent= new Intent(InitActivity.this,MainActivity.class);
 
 

@@ -1,6 +1,8 @@
 package com.example.meucomercio.model;
 
+import android.net.Uri;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
@@ -24,16 +26,17 @@ public class PostComercio {
     private String nomeUsuario;
     private String tituloComercio;
     private String dataPost;
-    private int imgPost;
+    private String urlImg;
     private String notaPost;
+
 
     public PostComercio() {
     }
 
-    public void salvarPost(){
+    public void salvarPost() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth auth= FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
         DocumentReference documentReference = db.collection("Post").document();
 
@@ -46,19 +49,18 @@ public class PostComercio {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.i("teste",e.getMessage());
+                Log.i("teste", e.getMessage());
             }
         });
 
 
+    }
+
+    public void teste() {
 
     }
 
-    public void teste(){
-
-    }
-
-    public  void RecuperarDados(){
+    public void RecuperarDados() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Post")
@@ -66,22 +68,20 @@ public class PostComercio {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
                                 //Log.i("query",documentSnapshot.getId() + "=>" + documentSnapshot.getData());
 
                             }
-                        }else {
-                            Log.i("query","Erro" + task.getException());
+                        } else {
+                            Log.i("query", "Erro" + task.getException());
                         }
                     }
                 });
 
 
     }
-
-
 
 
     public String getIdUsuario() {
@@ -116,14 +116,6 @@ public class PostComercio {
         this.dataPost = dataPost;
     }
 
-    public int getImgPost() {
-        return imgPost;
-    }
-
-    public void setImgPost(int imgPost) {
-        this.imgPost = imgPost;
-    }
-
     public String getNotaPost() {
         return notaPost;
     }
@@ -138,5 +130,13 @@ public class PostComercio {
 
     public void setNomeUsuario(String nomeUsuario) {
         this.nomeUsuario = nomeUsuario;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
     }
 }

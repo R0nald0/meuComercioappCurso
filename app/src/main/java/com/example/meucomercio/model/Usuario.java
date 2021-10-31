@@ -93,6 +93,8 @@ public class Usuario implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
     @com.google.firebase.firestore.Exclude
     public String getSenha() {
         return senha;

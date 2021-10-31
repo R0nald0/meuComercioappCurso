@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +26,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.meucomercio.R;
 import com.example.meucomercio.model.Comercio;
 import com.example.meucomercio.model.PostComercio;
 import com.example.meucomercio.model.Usuario;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,7 +50,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
@@ -60,6 +67,8 @@ public class Fragment_addPost extends Fragment {
     private Button BtnsalvadrDados;
     private  EditText notaPost;
     private  String postUsuNome;
+    private  TextView urdtxt;
+
 
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -69,6 +78,10 @@ public class Fragment_addPost extends Fragment {
     private Comercio comercio = new Comercio();
     private Usuario usuario1 = new Usuario();
     private Uri localImg;
+
+    private String downImg;
+
+
 
 
 
@@ -85,28 +98,52 @@ public class Fragment_addPost extends Fragment {
        edTitulo=(EditText) view.findViewById(R.id.edtComTitulo);
        edData =(TextView) view.findViewById(R.id.edtComDataPost);
        notaPost = (EditText) view.findViewById(R.id.idaddPostNota);
+       urdtxt = (TextView) view.findViewById(R.id.idurldown);
 
-       BtnsalvadrDados= (Button) view.findViewById(R.id.edtComSalvarPost);
 
-        buscarCampoUsuario();
 
-       btAddImege.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-                adidcionarFoto();
-           }
-       });
+        BtnsalvadrDados= (Button) view.findViewById(R.id.edtComSalvarPost);
 
-      BtnsalvadrDados.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              addPostagem();
-          }
-      });
+
+
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+        buscarCampoUsuario();
+
+
+        btAddImege.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                adidcionarFoto();
+            }
+        });
+
+        BtnsalvadrDados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                salvarimgFirebase();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addPostagem();
+                    }
+                },3000);
+
+
+            }
+        });
+    }
 
     public void adidcionarFoto(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -129,6 +166,7 @@ public class Fragment_addPost extends Fragment {
                 img.compress(Bitmap.CompressFormat.PNG,74,stream);
                 imvCard.setImageBitmap(img);
 
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -138,10 +176,12 @@ public class Fragment_addPost extends Fragment {
 
 
     public void salvarimgFirebase(){
+       // numeros randomicos que nao se repetem
         Set<Integer> numeros = new TreeSet<>();
         Random random= new Random();
         numeros.add(random.nextInt());
 
+      //////////////
         StorageReference referenceImg =storageR.child("images");
         StorageReference  spaceRef =storageR.child("images/"+numeros+"img.jpg");
 
@@ -161,15 +201,47 @@ public class Fragment_addPost extends Fragment {
                @Override
                public void onFailure(@NonNull Exception e) {
                    Toast.makeText(getContext(),"errro"+ e.getMessage(),Toast.LENGTH_SHORT).show();
+
                }
            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                @Override
                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                   Log.i("img"," " + localImg);
-                   Toast.makeText(getContext(),"sUCESSO",Toast.LENGTH_SHORT).show();
+                 //  Toast.makeText(getContext(),"sUCESSO",Toast.LENGTH_SHORT).show();
                }
            });
 
+           //Criando url de Dowload
+
+            Task<Uri> uriTask =task.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if ( !task.isSuccessful()){
+
+                        throw  task.getException();
+                    }
+
+                    return spaceRef.getDownloadUrl();
+
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (!task.isSuccessful()){
+                        Toast.makeText(getContext(),"urL ERRO ao gerar url",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Uri uri =task.getResult();
+                        urdtxt.setText(uri.toString());
+                        downImg =uri.toString();
+                        Log.i("urll", ""+ uri);
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                  Toast.makeText(getContext(),"urL ERRO"+ e.getMessage(),Toast.LENGTH_SHORT).show();
+              }
+          });
 
     }
 
@@ -177,19 +249,22 @@ public class Fragment_addPost extends Fragment {
         Date data = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat hr = new SimpleDateFormat("HH:MM");
+
         String datahj =dateFormat.format(data);
         String hora  = hr.format(data);
-        String horaDta =   datahj + "  ás    " + hora;
+        String horaDta =   datahj + "ás    " + hora;
+
 
         postComercio.setNomeComercio(edTitulo.getText().toString());
         postComercio.setDataPost( horaDta);
         postComercio.setIdUsuario(auth.getUid());
         postComercio.setNotaPost(notaPost.getText().toString());
         postComercio.setNomeUsuario(postUsuNome);
+      //  postComercio.setUrlImg(urdtxt.getText().toString());
+        postComercio.setUrlImg(downImg);
 
 
         vericarCampos();
-        //salvarimgFirebase();
         postComercio.salvarPost();
         limparCampos();
     }
@@ -198,7 +273,8 @@ public class Fragment_addPost extends Fragment {
          edTitulo.setText("");
          edData.setText("");
          notaPost.setText("");
-        Toast.makeText(getContext(), "Comercio Salvo", Toast.LENGTH_SHORT).show();
+         imvCard.setImageResource(R.drawable.ic_image_24);
+         Toast.makeText(getContext(), "Comercio Salvo", Toast.LENGTH_SHORT).show();
     }
 
     public void vericarCampos(){
@@ -210,7 +286,6 @@ public class Fragment_addPost extends Fragment {
     }
 
     public void buscarCampoUsuario(){
-
 
         DocumentReference documentReference =db.collection("Usuarios").document(auth.getCurrentUser().getUid());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {

@@ -27,11 +27,11 @@
 
                 <TextView
                     android:id="@+id/cardVnome"
-                    android:layout_width="250dp"
+                    android:layout_width="210dp"
                     android:layout_height="wrap_content"
                     android:text="Nome"
                     android:textStyle="bold"
-                    android:textSize="20dp"
+                    android:textSize="17dp"
                     android:typeface="serif"
                     android:padding="2dp"/>
 
@@ -41,9 +41,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="NomeUsuario"
-                    android:textStyle="italic"
-                    android:textSize="15dp"
-                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="17dp"
+                    android:typeface="serif"
                     android:padding="2dp"/>
 
             </LinearLayout>
@@ -54,15 +54,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="4dp">
 
                 <TextView
                     android:id="@+id/cardVdata"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="Data"
-                    android:fontFamily="@font/livesshow"
-                    android:textSize="17sp"
+                    android:textStyle="italic"
+                    android:typeface="monospace"
+                    android:textSize="13sp"
                     android:padding="2dp"
                     />
                 <TextView
@@ -72,7 +73,9 @@
                     android:text="Bahia / Salvador/ Rio Vermelho"
                     android:gravity="end"
                     android:fontFamily="@font/romelio"
-                    android:textSize="14sp"
+                    android:typeface="monospace"
+                    android:textStyle="italic"
+                    android:textSize="13sp"
                     />
             </LinearLayout>
 
