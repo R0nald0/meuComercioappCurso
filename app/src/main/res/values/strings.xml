@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">MeuComercio</string>
-    <string name="email">Email</string>
+    <string name="email"> Entre com o Email</string>
 
     <string name="senhatx">Senha</string>
-    <string name="senhaEd">Senha</string>
+    <string name="senhaEd">Entre com a Senha</string>
     <string name="cadastrar">Cadastrar</string>
     <string name="entrar">Entrar</string>
     <string name="nomocad">Nome</string>

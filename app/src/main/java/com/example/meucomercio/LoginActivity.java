@@ -16,15 +16,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
-    private Button btCdasto;
-    private EditText edEmail;
-    private EditText edSenha;
-    private Button btEntrar;
-    private TextView txEmail;
-    private TextView txSenha;
+    private Button btCdasto,btEntrar;
+    private EditText edEmail,edSenha;
+    private TextView txEmail,txSenha,esqSenha;
 
     FirebaseAuth auth =FirebaseAuth.getInstance();
     Usuario usuario1 =new Usuario();
@@ -40,12 +39,24 @@ public class LoginActivity extends AppCompatActivity {
         txSenha = (TextView)findViewById(R.id.txsenha);
         txEmail =(TextView) findViewById(R.id.txemail);
         btEntrar = (Button)  findViewById(R.id.btnentrar);
+        esqSenha = (TextView) findViewById(R.id.idEsqSenha);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        esqSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Recuperar senha",Toast.LENGTH_LONG).show();
+            }
+        });
         btCdasto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this,CadastroActivity.class);
                 startActivity(intent);
+
             }
         });
 
@@ -56,15 +67,11 @@ public class LoginActivity extends AppCompatActivity {
                 usuario1.setEmail(edEmail.getText().toString());
                 usuario1.setSenha(edSenha.getText().toString());
                 verificaCampo();
-
             }
         });
     }
 
-
-
     public void verificaCampo(){
-
         if (edEmail.getText().length()  != 0 & edSenha.getText().length() != 0){
               LoginUser();
         }else  if (edEmail.getText().length() == 0){
@@ -72,30 +79,28 @@ public class LoginActivity extends AppCompatActivity {
         }else if (edSenha.getText().length() ==0){
             edSenha.setError("Preencha este campo");
         }
-
     }
-
-
     public void LoginUser(){
-
         auth.signInWithEmailAndPassword(usuario1.getEmail(),usuario1.getSenha())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 FirebaseUser user = auth.getCurrentUser();
-
                 if (task.isSuccessful()){
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     finish();
                 }else {
-
-                    Toast.makeText(getApplicationContext(),"Erro " +Error.class,Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
-
-    }
-
+                     String msgErroLogin ="";
+                    try {
+                        throw task.getException();
+                    }catch (FirebaseAuthInvalidUserException e){
+                         msgErroLogin ="Email não Cadastrado";
+                    } catch (FirebaseAuthInvalidCredentialsException e){
+                        msgErroLogin="Senha incorreta";
+                    } catch (Exception e) {
+                        msgErroLogin="Erro ao Fazer o login ";
+                    }
+                    Toast.makeText(getApplicationContext()," " + msgErroLogin,Toast.LENGTH_LONG).show();
+                } }
+        }); }
 }

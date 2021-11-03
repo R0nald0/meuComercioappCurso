@@ -16,13 +16,13 @@ import com.google.firebase.auth.FirebaseUser;
 public class InitActivity extends AppCompatActivity {
    FirebaseAuth auth = FirebaseAuth.getInstance();
    private TextView txMcomercio;
-    @Override
+
+
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
-
         txMcomercio = (TextView) findViewById(R.id.txMeuComercio);
-
     }
 
 
@@ -32,7 +32,6 @@ public class InitActivity extends AppCompatActivity {
 
         verificaLogin();
     }
-
 
     public void verificaLogin(){
         Handler handler = new Handler();
@@ -50,11 +49,8 @@ public class InitActivity extends AppCompatActivity {
     public void initActivity(){
         FirebaseUser  user = auth.getCurrentUser();
         if (user != null){
-            //startActivity(new Intent(InitActivity.this,MainActivity.class));
 
             Intent intent= new Intent(InitActivity.this,MainActivity.class);
-
-
             startActivity(intent);
 
             Toast.makeText(this,"Entrando",Toast.LENGTH_LONG).show();

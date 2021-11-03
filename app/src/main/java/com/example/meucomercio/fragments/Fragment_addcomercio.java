@@ -26,60 +26,42 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class Fragment_addcomercio extends Fragment {
 
-    private EditText nomeComecio;
+    private EditText nomeComecio,localizacao;
     private TextView nomeUsuario;
-    private EditText localizacao;
     private Button  btnSalvarComer;
 
-    Comercio comercio =new Comercio();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseFirestore db=FirebaseFirestore.getInstance();
-    Usuario usuario1= new Usuario();
+   private FirebaseAuth auth = FirebaseAuth.getInstance();
+   private FirebaseFirestore db=FirebaseFirestore.getInstance();
+   private Usuario usuario1= new Usuario();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_addcomercio,container,false);
-
         nomeComecio =(EditText) view.findViewById(R.id.edtNomeComer);
         nomeUsuario =(TextView) view.findViewById(R.id.txComerNomeUSER);
         localizacao = (EditText)  view.findViewById(R.id.localComercio);
         btnSalvarComer = (Button)  view.findViewById(R.id.edSalvaComercio);
-
-
-
-        btnSalvarComer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                salvarComercio();
-
-
-            }
-        });
-
-
         return view;
     }
-
     @Override
     public void onStart() {
         super.onStart();
-
-       buscarCampoUsuario();
+        btnSalvarComer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                salvarComercio();
+            }
+        });
+        buscarCampoUsuario();
     }
-
-
     public void vericarCampos(){
-        if (nomeUsuario.getText().length() ==0 && nomeUsuario.getText().length() ==0 && localizacao.getText().length() == 0){
-               nomeUsuario.setError("Insira o nome do comercio");
-               nomeUsuario.setError("Faça o login com a sua conta.");
-               localizacao.setError("Inisira a Localizaçao ");
+        if (nomeComecio.getText().length() ==0 ){
+              nomeComecio.setError("Adcione o nome do comércio");
+        }else if(localizacao.getText().length() ==0 ){
+             localizacao.setError("Insira a localização");
         }
     }
-
-
     public void  salvarComercio(){
 
         Comercio comercio = new Comercio();
@@ -89,11 +71,8 @@ public class Fragment_addcomercio extends Fragment {
         comercio.setIdUsuario(auth.getCurrentUser().getUid());
         vericarCampos();
         comercio.addComercio();
-
         limparCampos();
-
     }
-
     public  void limparCampos(){
         nomeComecio.setText("");
         localizacao.setText("");
@@ -110,7 +89,6 @@ public class Fragment_addcomercio extends Fragment {
                 }else {
                     Log.i("teste","erro"+ error.toString());
                 }
-
             }
         });
     }

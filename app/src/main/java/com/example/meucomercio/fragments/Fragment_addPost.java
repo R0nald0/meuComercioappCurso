@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -60,16 +61,11 @@ import java.util.TreeSet;
 public class Fragment_addPost extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    private Button btAddImege;
+    private Button btAddImege,BtnsalvadrDados;
     private ImageView imvCard;
-    private EditText edTitulo;
+    private EditText edTitulo,notaPost;
     private TextView edData;
-    private Button BtnsalvadrDados;
-    private  EditText notaPost;
-    private  String postUsuNome;
-    private  TextView urdtxt;
-
-
+    private  String postUsuNome,downImg;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseFirestore db =FirebaseFirestore.getInstance();
@@ -78,12 +74,6 @@ public class Fragment_addPost extends Fragment {
     private Comercio comercio = new Comercio();
     private Usuario usuario1 = new Usuario();
     private Uri localImg;
-
-    private String downImg;
-
-
-
-
 
 
     @SuppressLint("WrongThread")
@@ -94,19 +84,10 @@ public class Fragment_addPost extends Fragment {
 
        btAddImege =(Button) view.findViewById(R.id.btnPostImg);
        imvCard =(ImageView) view.findViewById(R.id.imgvComPost);
-
        edTitulo=(EditText) view.findViewById(R.id.edtComTitulo);
        edData =(TextView) view.findViewById(R.id.edtComDataPost);
        notaPost = (EditText) view.findViewById(R.id.idaddPostNota);
-       urdtxt = (TextView) view.findViewById(R.id.idurldown);
-
-
-
-        BtnsalvadrDados= (Button) view.findViewById(R.id.edtComSalvarPost);
-
-
-
-
+       BtnsalvadrDados= (Button) view.findViewById(R.id.edtComSalvarPost);
         return view;
     }
 
@@ -114,15 +95,10 @@ public class Fragment_addPost extends Fragment {
     public void onStart() {
         super.onStart();
 
-
-        buscarCampoUsuario();
-
-
+       buscarCampoUsuario();
         btAddImege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 adidcionarFoto();
             }
         });
@@ -130,17 +106,7 @@ public class Fragment_addPost extends Fragment {
         BtnsalvadrDados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                salvarimgFirebase();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        addPostagem();
-                    }
-                },3000);
-
-
+                vericarCampos();
             }
         });
     }
@@ -153,27 +119,20 @@ public class Fragment_addPost extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-
         if (requestCode==RESULT_OK && resultCode == RESULT_OK && data !=null){
-
            localImg =data.getData();
             Bitmap img = null;
-
             try {
                 img = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),localImg);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 img.compress(Bitmap.CompressFormat.PNG,74,stream);
                 imvCard.setImageBitmap(img);
 
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
-
 
     public void salvarimgFirebase(){
        // numeros randomicos que nao se repetem
@@ -181,7 +140,6 @@ public class Fragment_addPost extends Fragment {
         Random random= new Random();
         numeros.add(random.nextInt());
 
-      //////////////
         StorageReference referenceImg =storageR.child("images");
         StorageReference  spaceRef =storageR.child("images/"+numeros+"img.jpg");
 
@@ -193,7 +151,7 @@ public class Fragment_addPost extends Fragment {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         bitmap.compress(Bitmap.CompressFormat.PNG,76,stream);
-
+        ///////////salva img no firebase//////////////
        byte[] dados =stream.toByteArray();//uploado com putBytes
           UploadTask task = spaceRef.putBytes(dados);
 
@@ -201,27 +159,22 @@ public class Fragment_addPost extends Fragment {
                @Override
                public void onFailure(@NonNull Exception e) {
                    Toast.makeText(getContext(),"errro"+ e.getMessage(),Toast.LENGTH_SHORT).show();
-
                }
            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                @Override
                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                 //  Toast.makeText(getContext(),"sUCESSO",Toast.LENGTH_SHORT).show();
+                 //  Toast.makeText(getContext(),"sucesso",Toast.LENGTH_SHORT).show();
                }
            });
 
-           //Criando url de Dowload
-
+           ///////////////////////Criando url de Dowload////////////////////////////////////
             Task<Uri> uriTask =task.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if ( !task.isSuccessful()){
-
                         throw  task.getException();
                     }
-
                     return spaceRef.getDownloadUrl();
-
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
@@ -229,73 +182,64 @@ public class Fragment_addPost extends Fragment {
                     if (!task.isSuccessful()){
                         Toast.makeText(getContext(),"urL ERRO ao gerar url",Toast.LENGTH_SHORT).show();
                     }else{
-                        Uri uri =task.getResult();
-                        urdtxt.setText(uri.toString());
-                        downImg =uri.toString();
-                        Log.i("urll", ""+ uri);
+                        if (task.isComplete()){
+                            downImg =task.getResult().toString();
+                            addPostagem();
+                        }
                     }
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
               @Override
               public void onFailure(@NonNull Exception e) {
-                  Toast.makeText(getContext(),"urL ERRO"+ e.getMessage(),Toast.LENGTH_SHORT).show();
+                  Toast.makeText(getContext(),"urL ERRO: "+ e.getMessage(),Toast.LENGTH_SHORT).show();
               }
           });
-
     }
 
     public void addPostagem(){
-        Date data = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        DateFormat hr = new SimpleDateFormat("HH:MM");
 
-        String datahj =dateFormat.format(data);
-        String hora  = hr.format(data);
-        String horaDta =   datahj + "ás    " + hora;
-
-
+        String timer = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
         postComercio.setNomeComercio(edTitulo.getText().toString());
-        postComercio.setDataPost( horaDta);
+        postComercio.setDataPost( timer);
         postComercio.setIdUsuario(auth.getUid());
         postComercio.setNotaPost(notaPost.getText().toString());
         postComercio.setNomeUsuario(postUsuNome);
-      //  postComercio.setUrlImg(urdtxt.getText().toString());
         postComercio.setUrlImg(downImg);
 
-
-        vericarCampos();
         postComercio.salvarPost();
         limparCampos();
     }
-
     public  void limparCampos(){
          edTitulo.setText("");
          edData.setText("");
          notaPost.setText("");
          imvCard.setImageResource(R.drawable.ic_image_24);
-         Toast.makeText(getContext(), "Comercio Salvo", Toast.LENGTH_SHORT).show();
+         Toast.makeText(getContext(), "Seu Post foi adicionado", Toast.LENGTH_SHORT).show();
     }
-
     public void vericarCampos(){
-        if (edTitulo.getText().length() == 0){
-            edTitulo.setError("Insira o nome um Titulo");
+        if (edTitulo.getText().length() != 0 & notaPost.getText().length() != 0 & imvCard.getDrawable() != null){
+            Toast.makeText(getContext(),"Aguarde um Momento",Toast.LENGTH_LONG).show();
+            salvarimgFirebase();
+        }else if (edTitulo.getText().length() == 0){
+            edTitulo.setError("Adicione uma O nome do Comércio");
+        }else  if (imvCard.getDrawable() == null){
+             notaPost.setError("Adcione uma imagem no campo Acima,toque no botao 'ADCIONAR IMAGEM'");
+             
         }else if (notaPost.getText().length() == 0){
-            notaPost.setError("Adicione uma Descrição");
+            notaPost.setError("Insira uma Descrição");
+
         }
     }
-
     public void buscarCampoUsuario(){
-
         DocumentReference documentReference =db.collection("Usuarios").document(auth.getCurrentUser().getUid());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null){
-
-                          postUsuNome=value.getString("nome");
+                    postUsuNome=value.getString("nome");
                 }else {
-                    Log.i("teste","erro"+ error.toString());
+                    Log.i("teste","erro: "+ error.toString());
                 }
             }
         });

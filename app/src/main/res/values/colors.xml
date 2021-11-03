@@ -8,4 +8,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="SlateBlue">#6A5ACD</color>
     <color name="SlateBlue3">#836FFF</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="Gainsboro">#DCDCDC</color>
+    <color name="transparente">#00F0F8FF</color>
 </resources>
