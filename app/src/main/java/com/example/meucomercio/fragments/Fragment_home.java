@@ -1,5 +1,12 @@
 package com.example.meucomercio.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,31 +21,27 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.meucomercio.Detalhes;
 import com.example.meucomercio.R;
-import com.example.meucomercio.adapter.AdapterCardview;
 import com.example.meucomercio.model.PostComercio;
 import com.example.meucomercio.model.Usuario;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class Fragment_home extends Fragment {
 
@@ -49,9 +52,10 @@ public class Fragment_home extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private PostComercio postComercio = new PostComercio();
     private Usuario usuario1 = new Usuario();
+    private Uri local;
 
     private FirestoreRecyclerAdapter <PostComercio, posVholder> adapterCardview;
-    private  String bairroPost  ;
+    private String bairroPost  ;
     private String[] baiiros={
             "Cajazeiras","Rio vermelho","Boca do Rio"
     };
@@ -61,11 +65,19 @@ public class Fragment_home extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragments_inicio, container, false);
          bairrospi = (Spinner) view.findViewById(R.id.spBairros);
+
          recyclerViewCard = (RecyclerView) view.findViewById(R.id.cardIni);
 
-
-
         return view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==RESULT_OK && resultCode == RESULT_OK && data !=null){
+            local =data.getData();
+        }
+
     }
     @Override
     public void onStart() {
@@ -92,11 +104,30 @@ public class Fragment_home extends Fragment {
 
                 holder.nome.setText(postComercio.getNomeComercio());
                 holder.data.setText(postComercio.getDataPost());
-                holder.imageView.setImageResource(R.drawable.img1);
                 Glide.with(getContext()).load(postComercio.getUrlImg()).into(holder.imageView);
+
                 holder.notaPost.setText(postComercio.getNotaPost());
                 holder.localPost.setText("Bahia/Salvador/" + bairroPost);
                 holder.nomeUsuarioPost.setText(postComercio.getNomeUsuario());
+
+
+
+
+                holder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String img = postComercio.getUrlImg();
+
+                        Intent intent = new Intent(getContext(), Detalhes.class);
+                        intent.putExtra( "nome",holder.nome.getText());
+                        intent.putExtra( "nomeUser",holder.nomeUsuarioPost.getText());
+                        intent.putExtra( "img",img);
+                        intent.putExtra( "data",holder.data.getText());
+                        intent.putExtra("nota",holder.notaPost.getText());
+
+                        startActivity(intent);
+                    }
+                });
 
                 holder.btnGotei.setOnClickListener(new View.OnClickListener() {
                     int cont = 0;
@@ -104,6 +135,7 @@ public class Fragment_home extends Fragment {
                     public void onClick(View v) {
                         cont = cont +1;
                         holder.btnGotei.setText("("+cont +") Gostei");
+
                     }
                 });
             }
@@ -117,6 +149,7 @@ public class Fragment_home extends Fragment {
          iniSpinmer();
         adapterCardview.startListening();
         FirebaseUser user =auth.getCurrentUser();
+
 
     }
     @Override
@@ -139,6 +172,8 @@ public class Fragment_home extends Fragment {
             localPost = (TextView) itemView.findViewById(R.id.cardLocal);
             nomeUsuarioPost = (TextView) itemView.findViewById(R.id.cardVnomeUsuario);
             btnGotei = (Button) itemView.findViewById(R.id.cardVbtnGostei);
+
+
         }
     }
     public void iniSpinmer(){

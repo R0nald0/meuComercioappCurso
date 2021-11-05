@@ -1,6 +1,7 @@
 package com.example.meucomercio.model;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -19,36 +20,24 @@ import java.util.Random;
 import java.util.Set;
 
 public class Comercio {
-    private String nome;
-    private String id;
-    private String localizacao;
-    private String idUsuario;
+    private String nome,id,localizacao,idUsuario;
 
     public Comercio() {
     }
-
     public void addComercio(){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
-
             DocumentReference documentReference = db.collection("Comercio").document();
             documentReference.set(this).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
-                public void onSuccess(Void unused) {
-
-                }
+                public void onSuccess(Void unused) { }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    e.getMessage();
                 }
             });
-
-
-
-
     }
 
     public String getIdUsuario() {

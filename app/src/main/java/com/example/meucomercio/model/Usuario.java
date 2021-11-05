@@ -17,48 +17,30 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 public class Usuario implements Serializable {
 
-  private String id;
-  private String nome;
-  private String email;
-  private String senha;
-  private String estado;
-  private String cidade;
-  private String bairro;
-
-
-
+  private String id,nome,email,senha,estado,cidade,bairro;
   private FirebaseFirestore db =FirebaseFirestore.getInstance();
   private FirebaseAuth auth =FirebaseAuth.getInstance();
 
-
     public Usuario() {
-
     }
-
     public void salvarUsuario(){
-
-        DocumentReference documentReference = db.collection("Usuarios").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+        DocumentReference documentReference = db.collection("Usuarios")
+                .document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
         documentReference.set(this).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
                 Log.i("teste","SUCESSO");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
                 Log.i("teste","ERRRO" + e.getMessage());
             }
         });
     }
 
-
-
-    @Exclude
     public String getId() {
         return id;
     }
@@ -82,7 +64,6 @@ public class Usuario implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     @com.google.firebase.firestore.Exclude
     public String getSenha() {

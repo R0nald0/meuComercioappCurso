@@ -21,14 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 
 public class PostComercio {
-    private String idPost;
-    private String idUsuario;
-    private String nomeUsuario;
-    private String tituloComercio;
-    private String dataPost;
-    private String urlImg;
-    private String notaPost;
-
+    private String idPost,idUsuario,nomeUsuario,tituloComercio,dataPost,urlImg,notaPost;
 
     public PostComercio() {
     }
@@ -39,50 +32,16 @@ public class PostComercio {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         DocumentReference documentReference = db.collection("Post").document();
-
         documentReference.set(this).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Void unused) {
-
-
-            }
+            public void onSuccess(Void unused) { }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.i("teste", e.getMessage());
             }
         });
-
-
     }
-
-    public void teste() {
-
-    }
-
-    public void RecuperarDados() {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Post")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
-                                //Log.i("query",documentSnapshot.getId() + "=>" + documentSnapshot.getData());
-
-                            }
-                        } else {
-                            Log.i("query", "Erro" + task.getException());
-                        }
-                    }
-                });
-
-
-    }
-
 
     public String getIdUsuario() {
         return idUsuario;
